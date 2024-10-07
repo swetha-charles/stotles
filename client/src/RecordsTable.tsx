@@ -39,6 +39,10 @@ function RecordsTable(props: Props) {
         title: "Buyer name",
         render: (record: ProcurementRecord) => record.buyer.name,
       },
+      {
+        title: "Amount",
+        render: (record: ProcurementRecord) => record.amount.currency && record.amount.value? `${record.amount.value} ${record.amount.currency} ` : "-"
+      }
     ];
   }, []);
   return (
