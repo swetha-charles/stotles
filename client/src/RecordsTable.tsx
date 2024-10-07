@@ -41,8 +41,18 @@ function RecordsTable(props: Props) {
       },
       {
         title: "Amount",
-        render: (record: ProcurementRecord) => record.amount.currency && record.amount.value? `${record.amount.value} ${record.amount.currency} ` : "-"
-      }
+        render: (record: ProcurementRecord) => {
+          if (!!record.amount.currency && !!record.amount.value) {
+            // Create our number formatter.
+            const formatter = new Intl.NumberFormat("en-UK", {
+              style: "currency",
+              currency: record.amount.currency.slice(0, 3),
+            });
+
+            return formatter.format(record.amount.value) + record.amount.currency.slice(3);
+          } else return "-"
+        },
+      },
     ];
   }, []);
   return (
