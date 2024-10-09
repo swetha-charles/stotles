@@ -2,6 +2,8 @@ import express, { request } from "express";
 
 import { Sequelize } from "sequelize-typescript";
 import {
+  BuyerDto,
+  GetBuyersResponse,
   ProcurementRecordDto,
   RecordSearchRequest,
   RecordSearchResponse,
@@ -79,6 +81,13 @@ async function searchRecords(
 }
 
 /**
+ * Queries database to get all buyers.
+ */
+async function getAllBuyers(): Promise<Buyer[]> {
+  return Buyer.findAll();
+}
+
+/**
  * Converts a DB-style ProcurementRecord object to an API type.
  * Assumes that all related objects (buyers) are prefetched upfront and passed in the `buyersById` map
  */
@@ -104,7 +113,7 @@ function serializeProcurementRecord(
     },
     amount: {
       value: record.value,
-      currency: record.currency
+      currency: record.currency,
     }
   };
 }
@@ -172,6 +181,20 @@ app.post("/api/records", async (req, res) => {
   };
 
   res.json(response);
+});
+
+/**
+ * This endpoint returns all buyers in the database.
+ */
+app.get("/api/buyers", async (_, res) => {
+  const buyers = await getAllBuyers();
+
+  // no need for serialisation as all fields in Buyer match BuyerDto
+  const response: GetBuyersResponse = {
+    buyers,
+  };
+
+  res.json(response)
 });
 
 app.listen(app.get("port"), () => {

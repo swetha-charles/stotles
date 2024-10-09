@@ -27,3 +27,7 @@ export type RecordSearchResponse = {
   records: ProcurementRecordDto[];
   endOfResults: boolean; // this is true when there are no more results to search
 };
+
+export type GetBuyersResponse = {
+  buyers: BuyerDto[]
+}
