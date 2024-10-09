@@ -1,17 +1,24 @@
-import { Input } from "antd";
+import { Input, Select } from "antd";
 import React from "react";
+import { Buyer } from "./Api";
 
 export type SearchFilters = {
   query: string;
 };
 
+export type BuyerOptions = {
+  value: string;
+  label: string;
+};
+
 type Props = {
   filters: SearchFilters;
+  buyers: BuyerOptions[];
   onChange: (newFilters: SearchFilters) => void;
 };
 
 function RecordSearchFilters(props: Props) {
-  const { filters, onChange } = props;
+  const { filters, buyers, onChange } = props;
 
   const handleQueryChange = React.useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
@@ -29,6 +36,11 @@ function RecordSearchFilters(props: Props) {
         placeholder="Search text..."
         value={filters.query}
         onChange={handleQueryChange}
+      />
+      <Select
+        style={{ width: "100%" }}
+        options={buyers}
+        placeholder="Select a buyer"
       />
     </div>
   );

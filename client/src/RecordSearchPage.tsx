@@ -1,7 +1,10 @@
 import { Button } from "antd";
 import React from "react";
-import Api, { ProcurementRecord } from "./Api";
-import RecordSearchFilters, { SearchFilters } from "./RecordSearchFilters";
+import Api, { Buyer, ProcurementRecord } from "./Api";
+import RecordSearchFilters, {
+  BuyerOptions,
+  SearchFilters,
+} from "./RecordSearchFilters";
 import RecordsTable from "./RecordsTable";
 
 /**
@@ -23,6 +26,7 @@ function RecordSearchPage() {
   const [searchFilters, setSearchFilters] = React.useState<SearchFilters>({
     query: "",
   });
+  const [buyerOptions, setBuyerOptions] = React.useState<BuyerOptions[]>([]);
 
   const [records, setRecords] = React.useState<
     ProcurementRecord[] | undefined
@@ -49,6 +53,22 @@ function RecordSearchPage() {
     })();
   }, [searchFilters, page]);
 
+  React.useEffect(() => {
+    const getAllBuyers = async () => {
+      const api = new Api();
+
+      const response = await api.getAllBuyers();
+      const options: BuyerOptions[] = response.buyers.map((buyer) => ({
+        value: buyer.id,
+        label: buyer.name,
+      }));
+
+      setBuyerOptions(options);
+    };
+
+    getAllBuyers();
+  }, []);
+
   const handleChangeFilters = React.useCallback((newFilters: SearchFilters) => {
     setSearchFilters(newFilters);
     setPage(1); // reset pagination state
@@ -62,6 +82,7 @@ function RecordSearchPage() {
     <>
       <RecordSearchFilters
         filters={searchFilters}
+        buyers={buyerOptions}
         onChange={handleChangeFilters}
       />
       {records && (
