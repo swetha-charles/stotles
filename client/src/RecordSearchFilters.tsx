@@ -53,6 +53,7 @@ function RecordSearchFilters(props: Props) {
         options={buyers}
         placeholder="Select a buyer"
         onChange={handleBuyerSelectChange}
+        allowClear={true}
       />
     </div>
   );
