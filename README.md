@@ -53,3 +53,18 @@ If for any reason the database becomes unusable, you can rebuild it using `./res
 ## The task
 
 All the instructions are available [here](https://www.notion.so/stotles/Full-stack-software-engineer-work-sample-assignment-ae7c64e08f2a42a097d16cee4bc661fc).
+
+
+# Notes from candidate
+- Create index on buyer_id if this buyer search is too slow when there is a large amount of data in database
+- Fix dependency vulnerabilities! (5 high and 1 critical)
+    - Due to interest of time and not wanting any breaking changes, I did not update the dependencies but this needs to be done ASAP
+    - Could use dependabot to make sure dependencies updates especially critical ones happen wth minimal developer involvement
+- Add tests 
+    - End to end tests could be added for the features considered vital. 
+    - Otherwise component tests would also be useful
+- Allow selecting multiple buyers
+    - This could be a good improvement if needed by users. The current implementation only allows selection of one buyer
+- Test if the new version of getRecords query is performant vs using raw SQL
+    - I rewrote the getRecords query using the sequelize model to increase maintainability 
+    - The previous iteration worked fine when there was only one search filter. However with two (or more) filters, the method quickly becomes quite complicated. 
