@@ -39,6 +39,7 @@ function RecordSearchPage() {
       const api = new Api();
       const response = await api.searchRecords({
         textSearch: searchFilters.query,
+        buyerId: searchFilters.buyerId,
         limit: PAGE_SIZE,
         offset: PAGE_SIZE * (page - 1),
       });
