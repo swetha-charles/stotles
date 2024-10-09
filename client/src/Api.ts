@@ -14,7 +14,10 @@ export type ProcurementRecord = {
   amount: {
     value?: number, 
     currency?: string
-  }
+  },
+  stage: 'TENDER' | 'CONTRACT',
+  closeDate?: string,
+  awardDate?: string
 };
 
 export type Buyer = {

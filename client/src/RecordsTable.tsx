@@ -43,14 +43,36 @@ function RecordsTable(props: Props) {
         title: "Amount",
         render: (record: ProcurementRecord) => {
           if (!!record.amount.currency && !!record.amount.value) {
-            // Create our number formatter.
             const formatter = new Intl.NumberFormat("en-UK", {
               style: "currency",
               currency: record.amount.currency.slice(0, 3),
             });
 
-            return formatter.format(record.amount.value) + record.amount.currency.slice(3);
-          } else return "-"
+            return (
+              formatter.format(record.amount.value) +
+              record.amount.currency.slice(3)
+            );
+          } else return "-";
+        },
+      },
+      {
+        title: "Stage",
+        render: (record: ProcurementRecord) => {
+          if (record.stage === "TENDER") {
+            const closeDate = new Date(record.closeDate);
+            const now = new Date();
+
+            if (closeDate === null || closeDate > now) {
+              //“ Open until {close_date}” if close date is null or close date is in the future
+              // “Closed” otherwise
+              return `Open until ${closeDate.toLocaleDateString()}`;
+            } else {
+              return "Closed";
+            }
+          } else if (record.stage === "CONTRACT") {
+            const awardDate = new Date();
+            return `Awarded on ${awardDate.toLocaleDateString()}`
+          } else return "Contract stage unknown"
         },
       },
     ];
